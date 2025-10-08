@@ -1,0 +1,109 @@
+#include <iostream>
+#include <math.h>
+#include <iomanip>
+using namespace std;
+
+int praxeis(int iprotos,int ideuteros,int itritos,
+            long double mpr,long double mdt,long double mtrt,
+            long double fdkpr,long double fdkdt,long double ftrt,
+            int st,long double tmp_up)
+{
+        long double pros;
+        long double afair;
+        long double fract,intpt;
+        long double xst;
+        if(st==0){
+            pros=ftrt+fdkdt;
+            fract=modf(pros,&intpt);
+        }
+        if(st==1 && fdkdt==0 && ftrt!=0){
+            pros=1-(abs(ftrt));
+            fract=modf(pros,&intpt);
+        }
+       cout<<std::setprecision(8)<<mpr << " :: " <<std::setprecision(8)<< iprotos << " " <<std::setprecision(8)<< fdkpr <<" || ";
+       cout<<std::setprecision(8)<<mdt << " :: " <<std::setprecision(8)<< ideuteros << " " <<std::setprecision(8)<< fdkdt <<" || ";
+       cout<<std::setprecision(8)<<mtrt << " :: "<<std::setprecision(8)<< itritos << " " <<std::setprecision(8)<< ftrt <<"\n";
+       if(st==0){
+                cout<<"@state " << st << " ------------> " <<std::setprecision(8)<< pros << " ::== "<<std::setprecision(8)<< ftrt << " + " <<std::setprecision(8)<< fdkdt <<"\n";
+       }
+       if(st==1 && fdkdt==0 && ftrt!=0){
+                cout<<"@state " << st << " ------------> " <<std::setprecision(8)<< pros << " ::== " << 1 << " " <<std::setprecision(8)<< ftrt <<"\n";
+       }
+       if(tmp_up!=0 && fdkpr!=0){
+                xst=abs(fdkpr)+abs(tmp_up);
+                fract=modf(xst,&intpt);
+       cout<<std::setprecision(8)<<xst << " ::== " <<std::setprecision(8)<< fdkpr << " + " <<std::setprecision(8)<< abs(tmp_up) << "\n";
+       cout<<std::setprecision(8)<<xst << " ::== " <<std::setprecision(8)<< intpt << " " <<std::setprecision(8)<< fract <<"\n";
+       }
+       cout<<"\n";
+       return 0;
+}
+
+
+
+int main(int argc,char** argv)
+{
+    cout<<"give me a dotted number , a non dotted number , precision \n";
+    long double dmnb;
+    long double nonmb;
+    long double akrone=1;
+    int preci=0;
+    string dmb;
+    dmb.clear();
+    dmnb=stold(argv[1]);
+    dmb+=argv[1];
+    cout<<std::setprecision(8)<<dmnb << " " <<std::setprecision(8)<< dmb <<"\n";
+    string nnmb;
+    nnmb.clear();
+    nnmb+=argv[2];
+    nonmb=stold(argv[2]);
+    cout<<std::setprecision(8)<<nonmb << " " <<std::setprecision(8)<< nnmb <<"\n";
+    preci=stoi()
+    long double xar[100];int xr=0;
+    long double xl=10;
+    xar[xr]=nonmb;xr+=1;
+    long double mxl;
+    long double fractpart,intpart;
+    long double frp,intpr;
+    long double fp,ipr;
+    long double rstf;
+    long double ddmnb;
+    int dm=0;int ldm=0;int dml=0;
+    for(int i=0;i<=dmb.size()-1;i++){
+        ldm+=1;
+        if(dmb.at(i)=='.'){dm=i;}
+    }
+    dml=ldm-dm;
+    dml=dml-1;
+    long double xp;
+    xp=pow(10,dml);
+    ddmnb=dmnb*xp;
+    cout<<std::setprecision(8)<<"new undotted " <<std::setprecision(8)<< ddmnb <<"\n";
+    for(int i=1;i<=nnmb.size();i++){
+       xl=pow(10,i);
+       mxl=(long double)nonmb/(long double)xl;
+       xar[xr]=(long double)mxl; xr+=1;
+    }
+    long double tmpup;
+    for(int i=0;i<=xr-1;i++){
+        cout<<"\n";
+        rstf=xar[i]-dmnb;
+        fractpart=modf(rstf,&intpart);
+        frp=modf(xar[i],&intpr);
+        fp=modf(dmnb,&ipr);
+        cout<<"------------------------------------------------------------\n";
+        cout<<"@i " << i << " :: " <<std::setprecision(8)<< xar[i] << " - " <<std::setprecision(8)<< dmnb <<" ::== " <<std::setprecision(8)<< rstf <<" \n";
+        praxeis(intpr,ipr,intpart,xar[i],dmnb,rstf,frp,fp,fractpart,0,0);
+        tmpup=fractpart;
+        rstf=xar[i]-ddmnb;
+        fractpart=modf(rstf,&intpart);
+        frp=modf(xar[i],&intpr);
+        fp=modf(ddmnb,&ipr);
+        cout<<std::setprecision(8)<<xar[i] << " - " <<std::setprecision(8)<< ddmnb <<" ::== " <<std::setprecision(8)<< rstf <<" \n";
+        praxeis(intpr,ipr,intpart,xar[i],ddmnb,rstf,frp,fp,fractpart,1,tmpup);
+        cout<<"------------------------------------------------------------\n";
+    }
+    cout<<"\n";
+    cout<<"\n";
+    return 0;
+}
